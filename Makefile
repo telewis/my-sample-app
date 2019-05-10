@@ -17,6 +17,7 @@ local: main.go
 	environment=MyEnvironment \
 	secret=MySecret \
 	pingService=http://localhost:8080/ping \
+	dnsTestHosts=test.k8s.toddelewis.net \
 	goapp
 
 test: goapp test.sh
@@ -27,6 +28,7 @@ test: goapp test.sh
 	environment=MyEnvironment \
 	secret=MySecret \
 	pingService=http://localhost:8080/ping \
+	dnsTestHosts=test.k8s.toddelewis.net \
 	./test.sh
 
 deploy: docker
