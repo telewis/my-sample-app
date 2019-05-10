@@ -2,18 +2,18 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: web-test-app
+  name: my-sample-app
 spec:
   replicas: 3
   revisionHistoryLimit: 3
   template:
     metadata:
       labels:
-        app: web-test-app
+        app: my-sample-app
     spec:
       containers:
-      - name: web-test-app
-        image: web-test-app:build_test
+      - name: my-sample-app
+        image: my-sample-app:build_test
         ports:
         - containerPort: 8080
         readinessProbe:
@@ -31,22 +31,22 @@ spec:
             cpu: ".1"
         envFrom:
         - configMapRef: 
-            name: web-test-config-map
+            name: my-sample-config-map
         env:
         - name: secret
           valueFrom:
             secretKeyRef:
-              name: web-test-app
+              name: my-sample-app
               key: password
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: web-test-app
+  name: my-sample-app
 spec:
   selector:
-    app: web-test-app
+    app: my-sample-app
   ports:
   - port: 80
     targetPort: 8080
@@ -56,12 +56,12 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: web-test-app
+  name: my-sample-app
 spec:
   rules:
-  - host: web-test-app.k8s.toddelewis.net
+  - host: my-sample-app.k8s.toddelewis.net
     http:
       paths:
       - backend:
-          serviceName: web-test-app
+          serviceName: my-sample-app
           servicePort: 80

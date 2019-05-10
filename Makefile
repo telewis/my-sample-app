@@ -3,11 +3,11 @@ goapp: main.go
 	chmod 500 goapp
 
 docker: main.go Dockerfile
-	docker build -t web-test-app:build_test .
+	docker build -t my-sample-app:build_test .
 
 restart:
-	kubectl scale deployment web-test-app --replicas=0
-	kubectl scale deployment web-test-app --replicas=5
+	kubectl scale deployment my-sample-app --replicas=0
+	kubectl scale deployment my-sample-app --replicas=5
 
 local: main.go
 	listenPort=8080 \
@@ -35,6 +35,11 @@ deploy: docker
 	kubectl apply -f deployment/secret.yaml
 	kubectl apply -f deployment/config-map-laptop.yaml
 	kubectl apply -f deployment/deployment.yaml
+
+undeploy: 
+	kubectl delete -f deployment/secret.yaml
+	kubectl delete -f deployment/config-map-laptop.yaml
+	kubectl delete -f deployment/deployment.yaml
 
 clean:
 	rm -rf goapp
