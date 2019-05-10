@@ -1,0 +1,67 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: web-test-app
+spec:
+  replicas: 3
+  revisionHistoryLimit: 3
+  template:
+    metadata:
+      labels:
+        app: web-test-app
+    spec:
+      containers:
+      - name: web-test-app
+        image: web-test-app:build_test
+        ports:
+        - containerPort: 8080
+        readinessProbe:
+          tcpSocket:
+            port: 8080
+        livenessProbe:
+          tcpSocket:
+            port: 8080
+        resources:
+          requests: 
+            memory: "50M"
+            cpu: ".1"
+          limits:
+            memory: "50M"
+            cpu: ".1"
+        envFrom:
+        - configMapRef: 
+            name: web-test-config-map
+        env:
+        - name: secret
+          valueFrom:
+            secretKeyRef:
+              name: web-test-app
+              key: password
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-test-app
+spec:
+  selector:
+    app: web-test-app
+  ports:
+  - port: 80
+    targetPort: 8080
+  type: NodePort
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: web-test-app
+spec:
+  rules:
+  - host: web-test-app.k8s.toddelewis.net
+    http:
+      paths:
+      - backend:
+          serviceName: web-test-app
+          servicePort: 80

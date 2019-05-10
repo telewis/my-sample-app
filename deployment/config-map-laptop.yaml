@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: web-test-config-map
+data:
+  listenPort: "8080"
+  imageName: web-test-app
+  imageTag: build_test
+  environment: LAPTOP
+  pingService: http://web-test-app/ping
+  dnsTestHosts: google.com,apple.com
