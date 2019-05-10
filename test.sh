@@ -6,6 +6,16 @@
 nohup ./goapp &
 
 #
+# Verify the app is running
+#
+pid=$(ps -ef | grep goapp | grep -v grep | awk '{print $2}')
+while [ -z "${pid}" ]
+do
+  sleep 5
+  pid=$(ps -ef | grep goapp | grep -v grep | awk '{print $2}')
+done
+
+#
 # Set the expected values
 #
 listenPort=8080
@@ -17,6 +27,7 @@ dnsString=*.k8s.toddelewis.net
 host=$(uname -n)
 #os=$(uname -s)
 os="darwin"
+pingOutput=Todds-MacBook-Pro.local-pong
 
 #
 # Call the app
@@ -67,9 +78,13 @@ if [ "${host}" != "${outHost}" ]; then
     exit 1
 fi
 
-echo "Tests Successful"
+outPingOutput=$(curl -s http://localhost:${listenPort}/ping)
+if [ "${pingOutput}" != "${outPingOutput}" ]; then
+    echo "Ping Mismatch: ${pingOutput} != ${outPingOutput}"
+    exit 1
+fi
 
 pid=$(ps -ef | grep goapp | grep -v grep | awk '{print $2}')
 kill ${pid}
 
-#pingOutput=$(curl -s http://localhost:${listenPort})
+echo "Tests Successful"
