@@ -5,9 +5,7 @@ goapp: main.go
 docker: main.go Dockerfile
 	docker build -t my-sample-app:build_test .
 
-restart:
-	kubectl scale deployment my-sample-app --replicas=0
-	kubectl scale deployment my-sample-app --replicas=5
+
 
 local: main.go
 	listenPort=8080 \
@@ -40,6 +38,10 @@ undeploy:
 	kubectl delete -f deployment/secret.yaml
 	kubectl delete -f deployment/config-map-laptop.yaml
 	kubectl delete -f deployment/deployment.yaml
+
+restart: docker deploy
+	kubectl scale deployment my-sample-app --replicas=0
+	kubectl scale deployment my-sample-app --replicas=5
 
 clean:
 	rm -rf goapp
