@@ -1,10 +1,14 @@
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: my-sample-app
+  namespace: my-sample-app
 spec:
   replicas: 3
+  selector:
+    matchLabels:
+      app: my-sample-app
   revisionHistoryLimit: 3
   template:
     metadata:
@@ -44,6 +48,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: my-sample-app
+  namespace: my-sample-app
 spec:
   selector:
     app: my-sample-app
@@ -57,6 +62,7 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: my-sample-app
+  namespace: my-sample-app
 spec:
   rules:
   - host: my-sample-app.k8s.toddelewis.net

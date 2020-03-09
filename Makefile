@@ -5,8 +5,6 @@ goapp: main.go
 docker: main.go Dockerfile
 	docker build -t my-sample-app:build_test .
 
-
-
 local: main.go
 	listenPort=8080 \
 	listenHost=127.0.0.1 \
@@ -30,11 +28,13 @@ test: goapp test.sh
 	./test.sh
 
 deploy: docker
+	kubectl apply -f deployment/namespace.yaml
 	kubectl apply -f deployment/secret.yaml
 	kubectl apply -f deployment/config-map-laptop.yaml
 	kubectl apply -f deployment/deployment.yaml
 
 undeploy: 
+	kubectl delete -f deployment/namespace.yaml
 	kubectl delete -f deployment/secret.yaml
 	kubectl delete -f deployment/config-map-laptop.yaml
 	kubectl delete -f deployment/deployment.yaml
