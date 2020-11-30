@@ -41,5 +41,5 @@ jobs:
           tags: |
             toddelewis/my-sample-app:latest
             toddelewis/my-sample-app:test
-            ghcr.io/telewis/my-sample-app:latest
-            ghcr.io/telewis/my-sample-app:test
+            ghcr.io/github/telewis/my-sample-app:latest
+            ghcr.io/github/telewis/my-sample-app:test
