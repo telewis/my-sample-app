@@ -16,7 +16,7 @@ import (
 )
 
 var count int
-var hostname, operatingSystem string
+var hostname, operatingSystem, architecture string
 var imageName, imageTag string
 var environment, secret, url, dnsString string
 var dnsTestHost []string
@@ -30,6 +30,7 @@ func init() {
 	secret = strings.TrimSuffix(secret, "\n")
 	url, _ = os.LookupEnv("pingService")
 	operatingSystem = runtime.GOOS
+	architecture = runtime.GOARCH
 
 	dnsString, _ = os.LookupEnv("dnsTestHosts")
 	dnsTestHost = strings.Split(dnsString, ",")
@@ -59,7 +60,7 @@ func myHandler(w http.ResponseWriter, r *http.Request) {
 	resp, _ := http.Get(url)
 	pong, _ := ioutil.ReadAll(resp.Body)
 
-	fmt.Fprintf(w, "%s:%s :: %s :: %s :: %s :: %s :: %s : %d", imageName, imageTag, environment, secret, operatingSystem, hostname, pong, count)
+	fmt.Fprintf(w, "%s:%s :: %s :: %s :: %s :: %s :: %s :: %s : %d", imageName, imageTag, environment, secret, operatingSystem, architecture, hostname, pong, count)
 	count++
 }
 
