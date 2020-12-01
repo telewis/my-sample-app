@@ -25,15 +25,14 @@ environment=MyEnvironment
 secret=MySecret
 dnsString=*.k8s.toddelewis.net
 host=$(uname -n)
-#os=$(uname -s)
 os="darwin"
-pingOutput=Todds-MacBook-Pro.local-pong
+arch="amd64"
+pingOutput=${host}-pong
 
 #
 # Call the app
 #
 output=$(curl -s http://localhost:${listenPort})
-##echo "${output}"
 
 #
 # Get the output
@@ -43,7 +42,8 @@ outImageTag=$(echo ${output} | awk -F: '{print $2}' | sed -e 's/ //g')
 outEnvironment=$(echo ${output} | awk -F: '{print $4}' | sed -e 's/ //g')
 outSecret=$(echo ${output} | awk -F: '{print $6}' | sed -e 's/ //g')
 outOS=$(echo ${output} | awk -F: '{print $8}' | sed -e 's/ //g')
-outHost=$(echo ${output} | awk -F: '{print $10}' | sed -e 's/ //g')
+outArch=$(echo ${output} | awk -F: '{print $10}' | sed -e 's/ //g')
+outHost=$(echo ${output} | awk -F: '{print $12}' | sed -e 's/ //g')
 
 #
 # Compare the output with the expected value
@@ -73,6 +73,11 @@ if [ "${os}" != "${outOS}" ]; then
     exit 1
 fi
 
+if [ "${arch}" != "${outArch}" ]; then
+    echo "Architecture Mismatch: ${arch} != ${outArch}"
+    exit 1
+fi
+
 if [ "${host}" != "${outHost}" ]; then
     echo "Host Mismatch: ${host} != ${outHost}"
     exit 1
@@ -84,6 +89,9 @@ if [ "${pingOutput}" != "${outPingOutput}" ]; then
     exit 1
 fi
 
+#
+# Kill the app
+#
 pid=$(ps -ef | grep goapp | grep -v grep | awk '{print $2}')
 kill ${pid}
 
