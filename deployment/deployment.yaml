@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: my-sample-app
-        image: my-sample-app:build_test
+        image: ghcr.io/telewis/my-sample-app:test
         ports:
         - containerPort: 8080
         readinessProbe:
@@ -55,19 +55,22 @@ spec:
   ports:
   - port: 80
     targetPort: 8080
-  type: NodePort
-
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: my-sample-app
   namespace: my-sample-app
 spec:
   rules:
-  - host: my-sample-app.k8s.toddelewis.net
+  - host: my-sample-app.startrek.toddelewis.net
     http:
       paths:
-      - backend:
-          serviceName: my-sample-app
-          servicePort: 80
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: my-sample-app
+            port: 
+              number: 80
+
