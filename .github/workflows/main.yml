@@ -1,4 +1,4 @@
-name: ci
+name: Docker Build
 
 on:
   push:
@@ -11,6 +11,13 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v2
+      - name: Dockerfile Validator
+        uses: ghe-actions/dockerfile-validator@v1
+      - name: Sysdig CIS Dockerfile Benchmark
+        uses: sysdiglabs/benchmark-dockerfile@v1.0.0
+        with:
+          directory: "./"
+          dockerfilePattern: "Dockerfile"
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -30,6 +37,10 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.CR_PAT }}
+      - 
+        name: Set tag var
+        id: vars
+        run: echo ::set-output name=docker_tag::$(echo ${GITHUB_REF} | cut -d'/' -f3)-${GITHUB_SHA}
       -
         name: Build and push
         uses: docker/build-push-action@v2
@@ -40,6 +51,13 @@ jobs:
           push: true
           tags: |
             toddelewis/my-sample-app:latest
-            toddelewis/my-sample-app:test
+            toddelewis/my-sample-app:${{ steps.vars.outputs.docker_tag }}
             ghcr.io/telewis/my-sample-app:latest
-            ghcr.io/telewis/my-sample-app:test
+            ghcr.io/telewis/my-sample-app:${{ steps.vars.outputs.docker_tag }}
+      - 
+        name: Scan with Phonito Security
+        uses: phonito/phonito-scanner-action@master
+        with:
+          image: ghcr.io/telewis/my-sample-app:${{ steps.vars.outputs.docker_tag }}
+          phonito-token: '${{ secrets.PHONITO_TOKEN }}'
+          
