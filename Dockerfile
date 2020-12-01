@@ -1,7 +1,7 @@
 # build stage
 FROM golang:alpine AS build-env
-ADD . /src
-RUN apk update 
+COPY . /src
+RUN apk update
 RUN apk add --no-cache git
 RUN cd /src && go build -o goapp
 
