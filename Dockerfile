@@ -7,6 +7,7 @@ RUN cd /src && go build -o goapp
 
 # final stage
 FROM alpine
+LABEL org.opencontainers.image.source https://github.com/telewis/my-sample-app
 WORKDIR /app
 COPY --from=build-env /src/goapp /app/
 EXPOSE 8080
