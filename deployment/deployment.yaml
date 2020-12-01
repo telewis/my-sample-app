@@ -17,7 +17,8 @@ spec:
     spec:
       containers:
       - name: my-sample-app
-        image: ghcr.io/telewis/my-sample-app:test
+        image: ghcr.io/telewis/my-sample-app:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
         readinessProbe:
