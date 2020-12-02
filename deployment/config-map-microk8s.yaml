@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-sample-config-map
+  namespace: my-sample-app
+data:
+  listenPort: "8080"
+  listenHost: "0.0.0.0"
+  imageName: my-sample-app
+  imageTag: build_test
+  environment: microk8s
+  pingService: http://my-sample-app/ping
+  dnsTestHosts: google.com,apple.com

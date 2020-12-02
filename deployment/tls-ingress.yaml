@@ -1,0 +1,35 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: my-sample-app-cert
+  namespace: my-sample-app
+spec:
+  dnsNames:
+    - my-sample-app.startrek.toddelewis.net
+  secretName: my-sample-app-cert
+  issuerRef:
+    name: selfsigned
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-sample-app
+  namespace: my-sample-app
+spec:
+  tls:
+  - hosts:
+      - my-sample-app.startrek.toddelewis.net
+    secretName: my-sample-app-cert
+  rules:
+  - host: my-sample-app.startrek.toddelewis.net
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: my-sample-app
+            port: 
+              number: 80
