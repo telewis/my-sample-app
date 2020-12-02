@@ -35,13 +35,12 @@ jobs:
       - name: Set tag var
         id: vars
         run: echo ::set-output name=docker_tag::$(echo ${GITHUB_REF} | cut -d'/' -f3)-${GITHUB_SHA}
-      - name: Build and push
+      - name: Build for Phonito scan
         uses: docker/build-push-action@v2
         with:
           context: .
           file: ./Dockerfile
           platforms: linux/amd64,linux/arm64
-          push: true
           load: true
           tags: |
             toddelewis/my-sample-app:latest
@@ -53,4 +52,16 @@ jobs:
         with:
           image: ghcr.io/telewis/my-sample-app:${{ steps.vars.outputs.docker_tag }}
           phonito-token: '${{ secrets.PHONITO_TOKEN }}'
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            toddelewis/my-sample-app:latest
+            toddelewis/my-sample-app:${{ steps.vars.outputs.docker_tag }}
+            ghcr.io/telewis/my-sample-app:latest
+            ghcr.io/telewis/my-sample-app:${{ steps.vars.outputs.docker_tag }}
           
