@@ -40,17 +40,13 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          platforms: linux/amd64,linux/arm64
           load: true
           tags: |
-            toddelewis/my-sample-app:latest
-            toddelewis/my-sample-app:${{ steps.vars.outputs.docker_tag }}
-            ghcr.io/telewis/my-sample-app:latest
-            ghcr.io/telewis/my-sample-app:${{ steps.vars.outputs.docker_tag }}
+            my-sample-app:latest
       - name: Scan with Phonito Security
         uses: phonito/phonito-scanner-action@master
         with:
-          image: ghcr.io/telewis/my-sample-app:${{ steps.vars.outputs.docker_tag }}
+          image: my-sample-app:latest
           phonito-token: '${{ secrets.PHONITO_TOKEN }}'
       - name: Build and push
         uses: docker/build-push-action@v2
