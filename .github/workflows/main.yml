@@ -54,7 +54,13 @@ jobs:
             toddelewis/my-sample-app:${{ steps.vars.outputs.docker_tag }}
             ghcr.io/telewis/my-sample-app:latest
             ghcr.io/telewis/my-sample-app:${{ steps.vars.outputs.docker_tag }}
-      - name: Nix Shell
+      - 
+        name: Install Nix
+        uses: cachix/install-nix-action@v10
+        with:
+          ßnix_path: nixpkgs=channel:nixos-unstable
+      - 
+        name: Nix Shell
         uses: workflow/nix-shell-action@v1
         with:
           packages: docker
