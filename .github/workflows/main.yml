@@ -54,6 +54,12 @@ jobs:
             toddelewis/my-sample-app:${{ steps.vars.outputs.docker_tag }}
             ghcr.io/telewis/my-sample-app:latest
             ghcr.io/telewis/my-sample-app:${{ steps.vars.outputs.docker_tag }}
+      - name: Nix Shell
+        uses: workflow/nix-shell-action@v1
+        with:
+          packages: docker
+          script: |
+            docker images
       - 
         name: Scan with Phonito Security
         uses: phonito/phonito-scanner-action@master
