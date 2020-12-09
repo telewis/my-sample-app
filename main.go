@@ -46,6 +46,7 @@ func main() {
 	}
 	listenAddress := listenHost + ":" + listenPort
 	r.HandleFunc("/", myHandler)
+	r.HandleFunc("/error", errorHandler)
 	r.HandleFunc("/crash", crashHandler)
 	r.HandleFunc("/dns", dnsHandler)
 	r.HandleFunc("/headers", headerHandler)
@@ -66,6 +67,11 @@ func myHandler(w http.ResponseWriter, r *http.Request) {
 
 func crashHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Bye!")
+	os.Exit(1)
+}
+
+func errorHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Printf("TEST ERROR MESSAGE")
 	os.Exit(1)
 }
 
