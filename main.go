@@ -71,8 +71,8 @@ func crashHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func errorHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Printf("TEST ERROR MESSAGE")
-	fmt.Fprintf(w, "TEST ERROR MESSAGE")
+	fmt.Fprintf(os.Stderr, "ERROR - an error has occurred\n")
+	fmt.Fprintf(w, "Testing Error Message")
 }
 
 func dnsHandler(w http.ResponseWriter, r *http.Request) {
