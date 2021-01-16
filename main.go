@@ -45,12 +45,12 @@ func main() {
 		listenHost = ""
 	}
 	listenAddress := listenHost + ":" + listenPort
-	r.HandleFunc("/", myHandler)
+	r.HandleFunc("/", myHandler).Methods("GET")
 	r.HandleFunc("/error", errorHandler)
-	r.HandleFunc("/crash", crashHandler)
-	r.HandleFunc("/dns", dnsHandler)
-	r.HandleFunc("/headers", headerHandler)
-	r.HandleFunc("/ping", pingHandler)
+	r.HandleFunc("/crash", crashHandler).Methods("POST")
+	r.HandleFunc("/dns", dnsHandler).Methods("GET")
+	r.HandleFunc("/headers", headerHandler).Methods("GET")
+	r.HandleFunc("/ping", pingHandler).Methods("GET")
 	r.Handle("/metrics", promhttp.Handler())
 	fmt.Printf("Starting application on: %s", listenAddress)
 	loggedRouter := handlers.LoggingHandler(os.Stdout, r)
