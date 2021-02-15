@@ -18,7 +18,13 @@ jobs:
         with:
           directory: "./"
           dockerfilePattern: "Dockerfile"
-
+          
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          key:             
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
 
