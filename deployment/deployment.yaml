@@ -90,7 +90,14 @@ kind: Ingress
 metadata:
   name: my-sample-app
   namespace: my-sample-app
+  annotations: 
+    cert-manager.io/cluster-issuer: "letsencrypt"
+    acme.cert-manager.io/http01-edit-in-place: "true" 
 spec:
+  tls:
+    - hosts:
+      - "my-sample-app.startrek.toddelewis.net"
+      secretName: my-sample-app-tls-cert
   rules:
   - host: my-sample-app.startrek.toddelewis.net
     http:
