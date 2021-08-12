@@ -43,7 +43,18 @@ spec:
             secretKeyRef:
               name: my-sample-app
               key: password
-
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100 
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - my-sample-app
+              topologyKey: "kubernetes.io/hostname"
 ---
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
