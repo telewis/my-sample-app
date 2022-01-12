@@ -1,0 +1,39 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-sample-pod
+  namespace: my-sample-app
+  labels:
+    app: my-sample-app
+spec:
+  nodeName: <INSERT NODE NAME>
+  containers:
+  - name: my-sample-pod
+    image: ghcr.io/telewis/my-sample-app:latest
+    imagePullPolicy: Always
+    ports:
+    - containerPort: 8080
+    readinessProbe:
+      tcpSocket:
+        port: 8080
+    livenessProbe:
+      tcpSocket:
+        port: 8080
+    resources:
+      requests: 
+        memory: "50M"
+        cpu: ".1"
+      limits:
+        memory: "50M"
+        cpu: ".1"
+    envFrom:
+    - configMapRef: 
+        name: my-sample-config-map
+    env:
+    - name: secret
+      valueFrom:
+        secretKeyRef:
+          name: my-sample-app
+          key: password
+
