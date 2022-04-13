@@ -6,10 +6,15 @@ metadata:
   namespace: my-sample-app
 spec:
   replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 25%
   selector:
     matchLabels:
       app: my-sample-app
-  revisionHistoryLimit: 3
+  revisionHistoryLimit: 5
   template:
     metadata:
       labels:
