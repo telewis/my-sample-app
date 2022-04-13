@@ -5,7 +5,6 @@ COPY . /src
 
 RUN apk update
 RUN apk add --no-cache git
-RUN go get -d -v
 RUN cd /src && go build -ldflags '-w -s' -o goapp
 
 # final stage
