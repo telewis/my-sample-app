@@ -8,12 +8,13 @@ RUN apk add --no-cache git
 RUN cd /src && go build -ldflags '-w -s' -o goapp
 
 # final stage
-FROM scratch
+FROM alpine
+
 LABEL org.opencontainers.image.source https://github.com/telewis/my-sample-app
 
-COPY --from=build-env /src/goapp /app/goapp
-COPY --from=build-env /etc/passwd /etc/passwd
-COPY --from=build-env /etc/group /etc/group
+WORKDIR /app
+
+COPY --from=build-env /src/goapp /app/
 
 EXPOSE 8080
 
