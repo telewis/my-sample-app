@@ -45,7 +45,7 @@ func main() {
         }
         listenPortTLS, ok := os.LookupEnv("listenPortTLS")
         if !ok {
-                listenPort = "8443"
+                listenPortTLS = "8443"
         }
 	listenHost, ok := os.LookupEnv("listenHost")
 	if !ok {
@@ -69,7 +69,7 @@ func main() {
 
 
         if listenMode == "https" {
-	  fmt.Printf("Starting HTTPSapplication on: %s", listenAddress)
+	  fmt.Printf("Starting HTTPS application on: %s", listenAddressTLS)
 	  log.Fatal(http.ListenAndServeTLS(listenAddressTLS, "/etc/cert/tls.crt", "/etc/cert/tls.key", loggedRouter))
         } else {
 	  fmt.Printf("Starting HTTP application on: %s", listenAddress)
