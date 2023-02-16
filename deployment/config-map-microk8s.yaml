@@ -4,7 +4,8 @@ metadata:
   name: my-sample-config-map
   namespace: my-sample-app
 data:
-  listenPort: "8080"
+  listneMode: "https"
+  listenPort: "8443"
   listenHost: "0.0.0.0"
   imageName: my-sample-app
   imageTag: build_test
