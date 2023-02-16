@@ -69,7 +69,7 @@ spec:
       volumes:     
       - name: tls-cert
         secret:
-          secretName: my-sample-app-cert
+          secretName: my-sample-app-tls-cert
 ---
 apiVersion: policy/v1
 kind: PodDisruptionBudget
