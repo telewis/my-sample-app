@@ -39,12 +39,25 @@ func init() {
 func main() {
 
 	r := mux.NewRouter()
-	listenPort, _ := os.LookupEnv("listenPort")
+	listenPort, ok := os.LookupEnv("listenPort")
+        if !ok {
+                listenPort = "8080"
+        }
+        listenPortTLS, ok := os.LookupEnv("listenPortTLS")
+        if !ok {
+                listenPort = "8443"
+        }
 	listenHost, ok := os.LookupEnv("listenHost")
 	if !ok {
 		listenHost = ""
 	}
 	listenAddress := listenHost + ":" + listenPort
+	listenAddressTLS := listenHost + ":" + listenPortTLS
+
+        listenMode, ok := os.LookupEnv("listenMode")
+        if !ok {
+                listenMode = "http"
+        }
 	r.HandleFunc("/", myHandler).Methods("GET")
 	r.HandleFunc("/error", errorHandler)
 	r.HandleFunc("/crash", crashHandler).Methods("POST")
@@ -52,9 +65,17 @@ func main() {
 	r.HandleFunc("/headers", headerHandler).Methods("GET")
 	r.HandleFunc("/ping", pingHandler).Methods("GET")
 	r.Handle("/metrics", promhttp.Handler())
-	fmt.Printf("Starting application on: %s", listenAddress)
 	loggedRouter := handlers.LoggingHandler(os.Stdout, r)
-	log.Fatal(http.ListenAndServe(listenAddress, loggedRouter))
+
+
+        if listenMode == "https" {
+	  fmt.Printf("Starting HTTPSapplication on: %s", listenAddress)
+	  log.Fatal(http.ListenAndServeTLS(listenAddressTLS, "/etc/cert/tls.crt", "/etc/cert/tls.key", loggedRouter))
+        } else {
+	  fmt.Printf("Starting HTTP application on: %s", listenAddress)
+	  log.Fatal(http.ListenAndServe(listenAddress, loggedRouter))
+
+       }
 }
 
 func myHandler(w http.ResponseWriter, r *http.Request) {
