@@ -23,6 +23,9 @@ spec:
       containers:
       - name: my-sample-app
         image: ghcr.io/telewis/my-sample-app:latest
+        volumeMounts:
+        - name: tls-cert
+          mountPath: "/etc/cert"
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
@@ -63,6 +66,10 @@ spec:
                   values:
                   - my-sample-app
               topologyKey: "kubernetes.io/hostname"
+      volumes:     
+      - name: tls-cert
+        secret:
+          secretName: my-sample-app-cert
 ---
 apiVersion: policy/v1
 kind: PodDisruptionBudget
