@@ -23,12 +23,32 @@ var dnsTestHost []string
 
 func init() {
 	hostname, _ = os.Hostname()
-	imageName, _ = os.LookupEnv("imageName")
-	imageTag, _ = os.LookupEnv("imageTag")
-	environment, _ = os.LookupEnv("environment")
-	secret, _ = os.LookupEnv("secret")
+	imageName, ok = os.LookupEnv("imageName")
+	if !ok {
+		imageName = "EMPTY"
+	}
+
+	imageTag, ok = os.LookupEnv("imageTag")
+	if !ok {
+		imageTag = "EMPTY"
+	}
+
+	environment, ok = os.LookupEnv("environment")
+	if !ok {
+		environment = "EMPTY"
+	}
+
+	secret, ok = os.LookupEnv("secret")
+	if !ok {
+		secret = "EMPTY"
+	}
 	secret = strings.TrimSuffix(secret, "\n")
-	url, _ = os.LookupEnv("pingService")
+
+	url, ok = os.LookupEnv("pingService")
+	if !ok {
+		pingService = "http://toddelewis102473.azurewebsites.net"
+	}
+
 	operatingSystem = runtime.GOOS
 	architecture = runtime.GOARCH
 
@@ -40,13 +60,13 @@ func main() {
 
 	r := mux.NewRouter()
 	listenPort, ok := os.LookupEnv("listenPort")
-        if !ok {
-                listenPort = "8080"
-        }
-        listenPortTLS, ok := os.LookupEnv("listenPortTLS")
-        if !ok {
-                listenPortTLS = "8443"
-        }
+	if !ok {
+			listenPort = "8080"
+	}
+	listenPortTLS, ok := os.LookupEnv("listenPortTLS")
+	if !ok {
+			listenPortTLS = "8443"
+	}
 	listenHost, ok := os.LookupEnv("listenHost")
 	if !ok {
 		listenHost = ""
@@ -54,10 +74,11 @@ func main() {
 	listenAddress := listenHost + ":" + listenPort
 	listenAddressTLS := listenHost + ":" + listenPortTLS
 
-        listenMode, ok := os.LookupEnv("listenMode")
-        if !ok {
-                listenMode = "http"
-        }
+	listenMode, ok := os.LookupEnv("listenMode")
+	if !ok {
+			listenMode = "http"
+	}
+
 	r.HandleFunc("/", myHandler).Methods("GET")
 	r.HandleFunc("/error", errorHandler)
 	r.HandleFunc("/crash", crashHandler).Methods("POST")
