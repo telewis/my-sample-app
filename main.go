@@ -27,7 +27,7 @@ func init() {
 	if !ok {
 		imageName = "EMPTY"
 	}
-        fmt.Printf ("imageName: %s", imageName)
+        fmt.Printf ("imageName: %s\n", imageName)
 
 	imageTag, ok = os.LookupEnv("imageTag")
 	if !ok {
@@ -49,7 +49,7 @@ func init() {
 	if !ok {
 		url = "http://toddelewis102473.azurewebsites.net"
 	}
-        fmt.Printf("pingService URL: %s", url)
+        fmt.Printf("pingService URL: %s\n", url)
 
 	operatingSystem = runtime.GOOS
 	architecture = runtime.GOARCH
@@ -91,10 +91,10 @@ func main() {
 	loggedRouter := handlers.LoggingHandler(os.Stdout, r)
 
         if listenMode == "https" {
-	  fmt.Printf("Starting HTTPS application on: %s", listenAddressTLS)
+	  fmt.Printf("Starting HTTPS application on: %s\n", listenAddressTLS)
 	  log.Fatal(http.ListenAndServeTLS(listenAddressTLS, "/etc/cert/tls.crt", "/etc/cert/tls.key", loggedRouter))
         } else {
-	  fmt.Printf("Starting HTTP application on: %s", listenAddress)
+	  fmt.Printf("Starting HTTP application on: %s\n", listenAddress)
 	  log.Fatal(http.ListenAndServe(listenAddress, loggedRouter))
 
        }
