@@ -23,10 +23,11 @@ var dnsTestHost []string
 
 func init() {
 	hostname, _ = os.Hostname()
-	imageName, ok = os.LookupEnv("imageName")
+	imageName, ok := os.LookupEnv("imageName")
 	if !ok {
 		imageName = "EMPTY"
 	}
+        fmt.Printf ("imageName: %s", imageName)
 
 	imageTag, ok = os.LookupEnv("imageTag")
 	if !ok {
@@ -46,8 +47,9 @@ func init() {
 
 	url, ok = os.LookupEnv("pingService")
 	if !ok {
-		pingService = "http://toddelewis102473.azurewebsites.net"
+		url = "http://toddelewis102473.azurewebsites.net"
 	}
+        fmt.Printf("pingService URL: %s", url)
 
 	operatingSystem = runtime.GOOS
 	architecture = runtime.GOARCH
@@ -87,7 +89,6 @@ func main() {
 	r.HandleFunc("/ping", pingHandler).Methods("GET")
 	r.Handle("/metrics", promhttp.Handler())
 	loggedRouter := handlers.LoggingHandler(os.Stdout, r)
-
 
         if listenMode == "https" {
 	  fmt.Printf("Starting HTTPS application on: %s", listenAddressTLS)
