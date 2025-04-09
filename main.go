@@ -33,6 +33,7 @@ func init() {
 	if !ok {
 		imageTag = "EMPTY"
 	}
+	fmt.Printf ("imageTag: %s\n", imagetag)
 
 	environment, ok = os.LookupEnv("environment")
 	if !ok {
@@ -71,7 +72,7 @@ func main() {
 	}
 	listenHost, ok := os.LookupEnv("listenHost")
 	if !ok {
-		listenHost = ""
+		        listenHost = ""
 	}
 	listenAddress := listenHost + ":" + listenPort
 	listenAddressTLS := listenHost + ":" + listenPortTLS
@@ -92,9 +93,11 @@ func main() {
 
         if listenMode == "https" {
 	  fmt.Printf("Starting HTTPS application on: %s\n", listenAddressTLS)
+	  fmt.Printf("%s :: %s :: %s :: %s", imageName, imageTag, environment, url)
 	  log.Fatal(http.ListenAndServeTLS(listenAddressTLS, "/etc/cert/tls.crt", "/etc/cert/tls.key", loggedRouter))
         } else {
 	  fmt.Printf("Starting HTTP application on: %s\n", listenAddress)
+	  fmt.Printf("%s :: %s :: %s :: %s", imageName, imageTag, environment, url)
 	  log.Fatal(http.ListenAndServe(listenAddress, loggedRouter))
 
        }
