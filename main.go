@@ -22,8 +22,10 @@ var environment, secret, url, dnsString string
 var dnsTestHost []string
 
 func init() {
+	var ok bool
+	
 	hostname, _ = os.Hostname()
-	imageName, ok := os.LookupEnv("imageName")
+	imageName, ok = os.LookupEnv("imageName")
 	if !ok {
 		imageName = "EMPTY"
 	}
