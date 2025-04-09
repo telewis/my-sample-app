@@ -33,7 +33,7 @@ func init() {
 	if !ok {
 		imageTag = "EMPTY"
 	}
-	fmt.Printf ("imageTag: %s\n", imagetag)
+	fmt.Printf ("imageTag: %s\n", imageTag)
 
 	environment, ok = os.LookupEnv("environment")
 	if !ok {
