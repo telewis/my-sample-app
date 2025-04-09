@@ -5,7 +5,7 @@ COPY . /src
 
 RUN apk update
 RUN apk add --no-cache git
-RUN cd /src && go build -ldflags '-w -s' -o goapp
+RUN cd /src && go build -o goapp
 
 # final stage
 FROM alpine
