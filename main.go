@@ -39,7 +39,8 @@ func init() {
 	if !ok {
 		environment = "EMPTY"
 	}
-
+        fmt.Printf ("environment: %s\n", environment)
+	
 	secret, ok = os.LookupEnv("secret")
 	if !ok {
 		secret = "EMPTY"
