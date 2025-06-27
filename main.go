@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net"
+	"cyrpto/tls"
 	"net/http"
 	"os"
 	"runtime"
@@ -107,6 +108,7 @@ func main() {
 }
 
 func myHandler(w http.ResponseWriter, r *http.Request) {
+	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 	resp, _ := http.Get(url)
 	pong, _ := ioutil.ReadAll(resp.Body)
 
