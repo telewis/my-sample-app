@@ -2,7 +2,7 @@ name: Docker Build
 
 on:
   push:
-
+  workflow_dispatch:
 jobs:
   multi:
     runs-on: ubuntu-latest
